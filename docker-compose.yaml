@@ -1,10 +1,10 @@
-version: '3'
+version: '3.8'
 
 services:
   unifi-protect:
     image: unifi-patch
     build:
-      context: .
+      context: patch
       dockerfile: Dockerfile.patch
     container_name: unifi-protect
     platform: linux/arm64/v8

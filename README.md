@@ -46,12 +46,13 @@ docker run --privileged --rm tonistiigi/binfmt --install all
 Note: It seems the changes are temporary and I always have to execute this command after reboot. 
 
   * Set `systemd.unified_cgroup_hierarchy=0` as kernel boot param and reboot. You can check if worked by `cat /proc/cmdline`, it should show up there.
-  * `docker-compose up -d`
+  * Build and start the container:
+   `docker-compose up  -d`
   * Wait, about 2 to 5 minutes and then you should be able to connect to https://localhost and configure it
 
 Debugging:
 ```
-docker-compose exec  unifi-protect /bin/bash
+docker-compose exec unifi-protect /bin/bash
 journactl -xf
 systemctl status unifi-core
 systemctl status unifi-protect
