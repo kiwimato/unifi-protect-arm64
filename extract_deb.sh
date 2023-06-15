@@ -15,4 +15,5 @@ while read pkg; do
   dpkg-repack -d -Zxz --root=_fwupdate.bin.extracted/squashfs-root/ --arch=arm64 ${pkg}
 done < packages.txt
 
-cp ubnt-archive-keyring* unifi-core* ubnt-tools* ulp-go* ../put-deb-files-here/
+cp ubnt-archive-keyring* unifi-core* ubnt-tools* ulp-go* unifi-assets-unvr* ../put-deb-files-here/
+cp extracted_fw/_fwupdate.bin.extracted/squashfs-root/usr/lib/version ../put-version-file-here/ 
