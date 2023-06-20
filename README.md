@@ -32,11 +32,19 @@ Optional: Update the env variable `STORAGE_DISK` to your disk to see disk usage 
 If you are stuck at a popup saying "Device Updating" with a blue loading bar after the initial setup, just run `systemctl restart unifi-core` inside the container or restart the entire container. This happens only the first time after the initial setup.
 
 ## Build your own image
-To build your own image download and [extract the UNVR firmware](doc/Extract_deb_files_from_firmware.md) and place the needed files in [`put-deb-files-here`](put-deb-files-here/README.md) and [`put-version-file-here`](put-version-file-here/README.md).
+To build your own image download the UNVR image from Unifi website.
+You can use the script in [download-bin-here](download-bin-here/) folder.
+
+Example usage:
+```bash
+./extract_deb.sh "https://fw-download.ubnt.com/data/unifi-nvr/ea27-UNVR-3.1.9-b046fae9-16f5-4aa2-bb3d-847c1c17117f.bin"
+```
+
+This should extract the 
 
 Build the image using:
 ```bash
-docker build -t markdegroot/unifi-protect-arm64 .
+docker build -t unifi-protect .
 ```
 ## Issues with remote access
 There is a known issue that remote access to your UNVR (via the Ubnt cloud) will not work with the console unless the primary network interface is named `enp0s2`. To achieve this, **on your host machine** create the file `/etc/systemd/network/98-enp0s2.link` with the content below, replacing `xx:xx:xx:xx:xx:xx` with your actual MAC address.

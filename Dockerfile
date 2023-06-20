@@ -53,17 +53,20 @@ RUN apt-get -y --no-install-recommends install /ubnt-archive-keyring_*_arm64.deb
     && echo 'deb https://apt.artifacts.ui.com bullseye main release beta' > /etc/apt/sources.list.d/ubiquiti.list \
     && chmod 666 /etc/apt/sources.list.d/ubiquiti.list \
     && apt-get update \
-    && apt-get -y --no-install-recommends install /*.deb unifi-protect \
+    && apt-get -y --no-install-recommends --force-yes -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install /*.deb unifi-protect \
     && rm -f /*.deb \
     && rm -rf /var/lib/apt/lists/* \
     && echo "exit 0" > /usr/sbin/policy-rc.d \
-    && sed -i 's/redirectHostname: unifi//' /usr/share/unifi-core/app/config/config.yaml \
+    && sed -i 's/redirectHostname: unifi//' /usr/share/unifi-core/app/config/default.yaml \
+    && sed -i -e 's/"mbToKeepFree": 65536/"mbToKeepFree": 1024/g' /usr/share/unifi-protect/app/config/config.json \
     && mv /sbin/mdadm /sbin/mdadm.orig \
     && mv /usr/sbin/smartctl /usr/sbin/smartctl.orig \
     && systemctl enable storage_disk dbpermissions\
     && pg_dropcluster --stop 9.6 main \
     && sed -i 's/rm -f/rm -rf/' /sbin/pg-cluster-upgrade \
-    && sed -i 's/OLD_DB_CONFDIR=.*/OLD_DB_CONFDIR=\/etc\/postgresql\/9.6\/main/' /sbin/pg-cluster-upgrade
+    && sed -i 's/OLD_DB_CONFDIR=.*/OLD_DB_CONFDIR=\/etc\/postgresql\/9.6\/main/' /sbin/pg-cluster-upgrade \
+    && touch /usr/bin/uled-ctrl \
+    && chmod +x /usr/bin/uled-ctrl
 
 COPY files/sbin /sbin/
 COPY files/usr /usr/
